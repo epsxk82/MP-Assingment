@@ -2,7 +2,9 @@
 
 #include <string>
 #include "ImageScaler.h"
+#include "BilinearFilter_FreeImage.h"
 #include "BilinearFilter_OpenCL.h"
+#include "BilinearFilter_Multithread.h"
 
 //응용프로그램 수행자
 class Runner
@@ -15,6 +17,7 @@ private:
 	void DoRun(BatchInput& batchInput, std::string const& immediatePath, std::string const& outputPath) const;
 	int RunFilterSelection() const;
 	int RunOpenCLDeviceSelection(BilinearFilter_OpenCL& bilinearFiler) const;
+	int RunMultithreadSelection() const;
 
 	void Run(std::string const& filePath) const;
 };
