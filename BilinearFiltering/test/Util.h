@@ -14,4 +14,6 @@ public:
 	static void ReadFileByLine(std::string const& fileName, std::vector<std::string>* lines);
 	static void Merge(BYTE *dst, int dstWidth, int dstHeight, BYTE *src, int bytePerPixel, SubTileType subTyleType);
 	static void Subdivide(BYTE *dst, BYTE* src, int srcWidth, int srcHeight, int bytePerPixel, SubTileType subTyleType);
+	static void AddImageIntoAtlas(BYTE* source, unsigned int rowIndex, unsigned int columnIndex, int sourceWidth, int sourceHeight, int atlasWidth, int atlasHeight, BYTE* atlas);
+	static void GetImageFromAtlas(BYTE* atlas, unsigned int rowIndex, unsigned int columnIndex, int atlasWidth, int atlasHeight, int destinationWidth, int destinationHeight, BYTE* destination);
 };

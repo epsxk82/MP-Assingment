@@ -21,7 +21,6 @@ void threadUpsample(std::vector<FIBITMAP*> const& sources, int width, int height
 // 스레드 다운 스케일링 함수
 void threadDownsample(std::vector<QuadBitMap> const& sources, int width, int height, int pitch, int bytePerPixel, FIBITMAP** destinations, int start)
 {
-
 	BilinearFilter_FreeImage worker;
 	auto resultSize = sources.size();
 	vector<FIBITMAP*> workerDestinations;

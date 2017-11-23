@@ -1,24 +1,24 @@
-ï»¿/*ì†Œí”„íŠ¸ì›¨ì–´ ê²¹ì„­í˜• 2ë°° ë‹¤ìš´ìŠ¤ì¼€ì¼ë§ì„ ìˆ˜í–‰*/
+/*¼ÒÇÁÆ®¿ş¾î °ã¼·Çü 2¹è ´Ù¿î½ºÄÉÀÏ¸µÀ» ¼öÇà*/
 __kernel void SWBilinearDownScaling(__read_only image2d_t sourceImage, __write_only image2d_t destinationImage)
 { 
 	const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP | CLK_FILTER_NEAREST;
 	int2 colorPosition = (int2)(get_global_id(0), get_global_id(1));
 
-	/*ì›ë³¸ ì´ë¯¸ì§€ì˜ ëŒ€ìƒ ì¢Œí‘œë“¤ì„ ê°€ì ¸ì˜´*/
+	/*¿øº» ÀÌ¹ÌÁöÀÇ ´ë»ó ÁÂÇ¥µéÀ» °¡Á®¿È*/
 	int2 leftTop = colorPosition * (int2)(2, 2);
 	int2 rightTop = leftTop + (int2)(1, 0);
 	int2 leftBottom = leftTop + (int2)(0, 1);
 	int2 rightBottom = leftTop + (int2)(1, 1);
 	
-	/*ì›ë³¸ ì´ë¯¸ì§€ì˜ ëŒ€ìƒ í”½ì…€ë“¤ì„ ê°€ì ¸ì˜´*/
+	/*¿øº» ÀÌ¹ÌÁöÀÇ ´ë»ó ÇÈ¼¿µéÀ» °¡Á®¿È*/
 	float4 leftTopColor = read_imagef(sourceImage, sampler, leftTop);
 	float4 rightTopColor = read_imagef(sourceImage, sampler, rightTop);
 	float4 leftBottomColor = read_imagef(sourceImage, sampler, leftBottom);
 	float4 rightBottomColor = read_imagef(sourceImage, sampler, rightBottom);
 
-	/*2ë°° ìˆ˜í–‰ì´ë¯€ë¡œ 4ê°œì˜ ê°€ì¤‘ì¹˜ëŠ” ë™ì¼*/
+	/*2¹è ¼öÇàÀÌ¹Ç·Î 4°³ÀÇ °¡ÁßÄ¡´Â µ¿ÀÏ*/
 	float4 quater = (float4)(0.25, 0.25, 0.25, 0.25);
-	/*ë³´ê°„ëœ ì»¬ëŸ¬ ê³„ì‚°*/
+	/*º¸°£µÈ ÄÃ·¯ °è»ê*/
 	float4 color = leftTopColor * quater  + rightTopColor * quater + leftBottomColor * quater + rightBottomColor * quater;
 	write_imagef(destinationImage, colorPosition, color);
 }
