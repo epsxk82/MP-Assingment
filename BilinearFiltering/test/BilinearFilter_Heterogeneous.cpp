@@ -20,12 +20,16 @@ BilinearFilter_Heterogeneous::BilinearFilter_Heterogeneous(BilinearFilter_Multit
 //업 스케일링 수행
 void BilinearFilter_Heterogeneous::Upsample(std::vector<FIBITMAP*> const& sources, int width, int height, int pitch, int bytePerPixel, std::vector<QuadBitMap>* destinations)
 {
-	size_t sourceCount = sources.size();
-	size_t cpuSourceCount = sourceCount * cpuWeight / (cpuWeight + gpuWeight);
-	size_t gpuSourceCount = sourceCount - cpuSourceCount;
+	auto sourceCount = sources.size();
+	auto cpuSourceCount = sourceCount * cpuWeight / (cpuWeight + gpuWeight);
+	auto gpuSourceCount = sourceCount - cpuSourceCount;
 
-	std::vector<FIBITMAP*> cpuSources(sources.begin(), sources.begin() + cpuSourceCount);
-	std::vector<FIBITMAP*> gpuSources(sources.begin() + cpuSourceCount, sources.end());
+	auto cpuStartIter = sources.begin();
+	auto cpuEndIter = sources.begin() + cpuSourceCount;
+	auto gpuStartIter = sources.begin() + cpuSourceCount;
+	auto gpuEndIter = sources.end();
+	std::vector<FIBITMAP*> cpuSources(cpuStartIter, cpuEndIter);
+	std::vector<FIBITMAP*> gpuSources(gpuStartIter, gpuEndIter);
 	std::vector<QuadBitMap> cpuDestinations;
 	std::vector<QuadBitMap> gpuDestinations;
 

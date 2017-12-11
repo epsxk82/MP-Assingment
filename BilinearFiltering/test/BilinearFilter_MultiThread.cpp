@@ -36,8 +36,8 @@ void threadDownsample(std::vector<QuadBitMap> const& sources, int width, int hei
 void BilinearFilter_Multithread::Upsample(std::vector<FIBITMAP*> const& sources, int width, int height, int pitch, int bytePerPixel, std::vector<QuadBitMap>* destinations)
 {
 	auto sourceCount = sources.size();
-	auto workSize = sourceCount / numThreads;
-
+	auto workSize = sourceCount / (numThreads > sourceCount ? sourceCount : numThreads);
+	
 	vector<thread*> workerThreads;
 
 	destinations->resize(sourceCount);
