@@ -79,13 +79,33 @@ void Runner::DoRun(BatchInput& batchInput, std::string const& immediatePath, str
 	//Multithread 필터일 경우
 	case 2:
 	{
-		BilinearFilter_Multithread bilinearFilter_FreeImage;
+		BilinearFilter_Multithread bilinearFilter_Multithread;
 		//사용자로부터 작업을 수행할 스레드의 개수를 읽어옴
 		int numThreads = RunMultithreadSelection();
-		bilinearFilter_FreeImage.SetNumThreads(numThreads);
-		imageScaler.Scale(batchInput, bilinearFilter_FreeImage);
+		bilinearFilter_Multithread.SetNumThreads(numThreads);
+		imageScaler.Scale(batchInput, bilinearFilter_Multithread);
 	}
 	break;
+	//Heterogeneous 필터인 경우
+	case 3:
+	{
+		BilinearFilter_Multithread bilinearFilter_Multithread;
+		int numThreads = RunMultithreadSelection();
+		bilinearFilter_Multithread.SetNumThreads(numThreads);
+
+		BilinearFilter_OpenCL bilinearFilter_OpenCL;
+		//사용자로부터 작업을 수행할 OpenCL 디바이스 선택을 읽어옴
+		int device = RunOpenCLDeviceSelection(bilinearFilter_OpenCL);
+		bilinearFilter_OpenCL.SetRunningDevice(device);
+
+		//CPU, GPU Weight를 받아옴
+		int cpuWeight, gpuWeight;
+		cpuWeight = RunHeterogeneousCpuSelection();
+		gpuWeight = RunHeterogeneousGpuSelection();
+		BilinearFilter_Heterogeneous bilinearFilter_Heterogeneous(&bilinearFilter_Multithread, &bilinearFilter_OpenCL, cpuWeight, gpuWeight);
+
+		imageScaler.Scale(batchInput, bilinearFilter_Heterogeneous);
+	}
 	}
 
 	cout << "종료하려면 아무키나 누르세요. ";
@@ -100,13 +120,14 @@ int Runner::RunFilterSelection() const
 	cout << "0. FreeImage" << endl;
 	cout << "1. OpenCL" << endl;
 	cout << "2. Multithread" << endl;
+	cout << "3. Heterogeneous" << endl;
 
 	int filter;
 	do
 	{
 		cout << "필터를 선택하세요 : ";
 		cin >> filter;
-		if (3 <= filter)
+		if (4 <= filter)
 		{
 			cout << "올바른 필터번호가 아닙니다." << endl;
 		}
@@ -181,6 +202,50 @@ int Runner::RunMultithreadSelection() const
 	cout << endl;
 
 	return numThreads;
+}
+
+//사용자로부터 CPU Weight를 읽어옴
+int Runner::RunHeterogeneousCpuSelection() const
+{
+	cout << endl;
+	int cpuWeight;
+	do
+	{
+		cout << "CPU Weight를 입력하세요 : ";
+		cin >> cpuWeight;
+		if (cpuWeight < 1)
+		{
+			cout << "잘못된 CPU Weight 값입니다." << endl;
+		}
+		else
+		{
+			break;
+		}
+	} while (true);
+
+	return cpuWeight;
+}
+
+//사용자로부터 GPU Weight를 읽어옴
+int Runner::RunHeterogeneousGpuSelection() const
+{
+	cout << endl;
+	int gpuWeight;
+	do
+	{
+		cout << "GPU Weight를 입력하세요 : ";
+		cin >> gpuWeight;
+		if (gpuWeight < 1)
+			{
+			cout << "잘못된 GPU Weight 값입니다." << endl;
+		}
+		else
+		{
+			break;
+		}
+	} while (true);
+
+	return gpuWeight;
 }
 
 //응응프로그램을 수행

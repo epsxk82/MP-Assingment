@@ -155,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="BilinearFilter.h" />
     <ClInclude Include="BilinearFilter_FreeImage.h" />
+    <ClInclude Include="BilinearFilter_Heterogeneous.h" />
     <ClInclude Include="BilinearFilter_Multithread.h" />
     <ClInclude Include="BilinearFilter_OpenCL.h" />
     <ClInclude Include="ImageFileIOHandler.h" />
@@ -170,7 +171,8 @@
   <ItemGroup>
     <ClCompile Include="BilinearFilter.cpp" />
     <ClCompile Include="BilinearFilter_FreeImage.cpp" />
-    <ClCompile Include="BilinearFilter_MultiThread.cpp" />
+    <ClCompile Include="BilinearFilter_Heterogeneous.cpp" />
+    <ClCompile Include="BilinearFilter_Multithread.cpp" />
     <ClCompile Include="BilinearFilter_OpenCL.cpp" />
     <ClCompile Include="ImageFileIOHandler.cpp" />
     <ClCompile Include="ImageScaler.cpp" />

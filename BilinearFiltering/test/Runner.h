@@ -5,6 +5,7 @@
 #include "BilinearFilter_FreeImage.h"
 #include "BilinearFilter_OpenCL.h"
 #include "BilinearFilter_Multithread.h"
+#include "BilinearFilter_Heterogeneous.h"
 
 //응용프로그램 수행자
 class Runner
@@ -18,6 +19,8 @@ private:
 	int RunFilterSelection() const;
 	int RunOpenCLDeviceSelection(BilinearFilter_OpenCL& bilinearFiler) const;
 	int RunMultithreadSelection() const;
+	int RunHeterogeneousCpuSelection() const;
+	int RunHeterogeneousGpuSelection() const;
 
 	void Run(std::string const& filePath) const;
 };
