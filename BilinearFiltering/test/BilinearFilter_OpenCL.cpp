@@ -327,7 +327,7 @@ void BilinearFilter_OpenCL::Downsample(vector<QuadBitMap> const& sources, int wi
 				QuadBitMapIndexType rightBottomBitmapColumn = segmentQuadBitmapColumn * 2 + 1;
 				downsampledColorBuffers[rightBottomBitmapRow][rightBottomBitmapColumn] = FreeImage_GetBits(quadBitmap._RightBottom);
 
-				indiceOfOutputBitmapToRetrieve[quadBitmapIndex] = make_pair(segmentQuadBitmapRow, segmentQuadBitmapColumn);
+				indiceOfOutputBitmapToRetrieve[quadBitmapIndex - segmentOffset] = make_pair(segmentQuadBitmapRow, segmentQuadBitmapColumn);
 			}
 
 			RunKernelWithBatch(_RunningDevice->_Context, _RunningDevice->_CommandQueue, _RunningDevice->_SWBilinearDownScalingKernel, sourceImage, 
