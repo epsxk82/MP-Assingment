@@ -45,7 +45,7 @@ FIBITMAP* ImageFileIOHandler::LoadTile(string const& filePath) const
 	return FreeImage_Load(FIF_BMP, filePath.c_str());
 }
 
-//주어진 위치에 JPEG 파일을 저장
+//주어진 위치에 BMP 파일을 저장
 void ImageFileIOHandler::SaveTile(FIBITMAP* bitmap, unsigned int level, unsigned int row, unsigned int column) const
 {
 	//저장할 디렉토리를 먼저 생성
@@ -54,7 +54,7 @@ void ImageFileIOHandler::SaveTile(FIBITMAP* bitmap, unsigned int level, unsigned
 	CreateDirectoryA(levelPath.c_str(), NULL);
 	string rowPath = levelPath + "\\" + to_string(row);
 	CreateDirectoryA(rowPath.c_str(), NULL);
-	string filePath = rowPath + "\\" + to_string(column) + ".jpg";
+	string filePath = rowPath + "\\" + to_string(column) + ".bmp";
 	FreeImage_Save(FIF_BMP, bitmap, filePath.c_str());
 
 	cout << filePath << " 파일이 생성되었습니다." << endl;
