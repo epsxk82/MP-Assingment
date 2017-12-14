@@ -69,16 +69,16 @@ bool BilinearFilter_OpenCL::ReadyForRun() const
 void BilinearFilter_OpenCL::OutputRunningError() const
 {
 	cout << endl;
-	cout << "OpenCL 필터를 실행할 수 없습니다." << endl;
+	cout << "Unable to run OpenCL Filter." << endl;
 	if(_Initialized == false)
 	{
-		cout << "필터가 초기화 되지 않았습니다." << endl;
+		cout << "Filter is not initialized." << endl;
 		return;
 	}
 
 	if(_RunningDevice == NULL)
 	{
-		cout << "실행 장치가 선택되지 않았습니다." << endl;
+		cout << "Device is not selected." << endl;
 		return;
 	}
 }
@@ -86,7 +86,7 @@ void BilinearFilter_OpenCL::OutputRunningError() const
 //이미지 속성값 에러 출력
 void BilinearFilter_OpenCL::OutputInvalidImageProperty() const
 {
-	cout << "유효하지 않은 이미지 입니다" << endl;
+	cout << "Invalid image." << endl;
 }
 //필터 이름 가져옴
 string const& BilinearFilter_OpenCL::GetName() const
@@ -179,13 +179,13 @@ void BilinearFilter_OpenCL::Upsample(std::vector<FIBITMAP*> const& sources, int 
 		cl_mem sourceImage = clCreateImage2D(context, CL_MEM_READ_ONLY | CL_MEM_ALLOC_HOST_PTR, &imageFormat, inputAtlasWidth, inputAtlasHeight, 0, NULL, &error);
 		if (error)
 		{
-			cout << "OpenCL 에러 : 이미지 객체 생성 중 에러가 발생하였습니다.." << endl;
+			cout << "OpenCL Error : Failed to create an image object.." << endl;
 			return;
 		}
 		cl_mem destinationImage = clCreateImage2D(context, CL_MEM_WRITE_ONLY | CL_MEM_ALLOC_HOST_PTR, &imageFormat, outputAtlasWidth, outputAtlasHeight, 0, NULL, &error);
 		if (error)
 		{
-			cout << "OpenCL 에러 : 이미지 객체 생성 중 에러가 발생하였습니다.." << endl;
+			cout << "OpenCL Error : Failed to create an image object.." << endl;
 			return;
 		}
 
@@ -275,13 +275,13 @@ void BilinearFilter_OpenCL::Downsample(vector<QuadBitMap> const& sources, int wi
 		cl_mem sourceImage = clCreateImage2D(context, CL_MEM_READ_ONLY | CL_MEM_ALLOC_HOST_PTR, &imageFormat, totalWidth, totalHeight, 0, NULL, &error);
 		if (error)
 		{
-			cout << "OpenCL 에러 : 이미지 객체 생성 중 에러가 발생하였습니다.." << endl;
+			cout << "OpenCL Error : Failed to create an image object.." << endl;
 			return;
 		}
 		cl_mem destinationImage = clCreateImage2D(context, CL_MEM_WRITE_ONLY | CL_MEM_ALLOC_HOST_PTR, &imageFormat, atlasWidth, atlasHeight, 0, NULL, &error);
 		if (error)
 		{
-			cout << "OpenCL 에러 : 이미지 객체 생성 중 에러가 발생하였습니다.." << endl;
+			cout << "OpenCL Error : Failed to create an image object.." << endl;
 			return;
 		}
 		
@@ -361,7 +361,7 @@ bool BilinearFilter_OpenCL::RunKernelWithBatch(cl_context context, cl_command_qu
 	BYTE* input = (BYTE*)clEnqueueMapImage(commandQueue, sourceImage, CL_TRUE, CL_MAP_WRITE, origin, region, &rowPitch, NULL, 0, NULL, NULL, &error);
 	if(error)
 	{
-		cout << "OpenCL 에러 : 이미지 바인딩 중 에러가 발생하였습니다.." << endl;
+		cout << "OpenCL Error : Failed to bind images.." << endl;
 		return false;
 	}
 
@@ -389,7 +389,7 @@ bool BilinearFilter_OpenCL::RunKernelWithBatch(cl_context context, cl_command_qu
 	BYTE* output = (BYTE*)clEnqueueMapImage(commandQueue, destinationImage, CL_TRUE, CL_MAP_READ, origin, regionForBilinear, &rowPitch, NULL, 0, NULL, NULL, &error);
 	if(error)
 	{
-		cout << "OpenCL 에러 : 이미지 바인딩 중 에러가 발생하였습니다.." << endl;
+		cout << "OpenCL Error : Failed to bind images.." << endl;
 		return false;
 	}
 

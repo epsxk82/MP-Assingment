@@ -412,9 +412,10 @@ void ImageScaler::Scale(BatchInput const& batchInput, BilinearFilter& filter)
 {
 	typedef vector<ImageTile>::size_type ImageTileIndexType;
 
+	
 	cout << endl;
-	cout << "이미지 스케일링 실행" << endl;
-	cout << "실행 필터 : " << filter.GetName() << endl;
+	cout << "Running Image Scaling" << endl;
+	cout << "Running Filter : " << filter.GetName() << endl;
 
 	vector<ImageTile> baseImageTiles;
 	if(GetBaseTiles(batchInput, &baseImageTiles) == true)
@@ -430,6 +431,6 @@ void ImageScaler::Scale(BatchInput const& batchInput, BilinearFilter& filter)
 			_ImageFileIOHandler->UnloadTile(baseImageTiles[imageTileIndex]._BitMap);
 		}
 
-		cout << "총 스케일링 시간(마이크로초, 파일I/O 제외 시간) : " << _TotalScalingTime << endl;
+		cout << "Total Scaling Time(microseconds, without File I/O time) : " << _TotalScalingTime << endl;
 	}
 }

@@ -15,7 +15,7 @@ Runner::Runner(string const& inputFilePath)
 //입력파일로부터 입력정보를 읽어옴
 void Runner::Initialize(std::string const& filePath, BatchInput* batchInput, std::string *immediatePath, std::string* outputPath) const
 {
-	cout << filePath << "에서 정보를 읽는 중.." << endl;
+	cout << "Reading infromation from " << filePath << "..." << endl;
 
 	vector<string> lines;
 	Util::ReadFileByLine("input.txt", &lines);
@@ -108,7 +108,7 @@ void Runner::DoRun(BatchInput& batchInput, std::string const& immediatePath, str
 	}
 	}
 
-	cout << "종료하려면 아무키나 누르세요. ";
+	cout << "Press ANY KEY to exit ";
 	_getch();
 }
 
@@ -116,7 +116,7 @@ void Runner::DoRun(BatchInput& batchInput, std::string const& immediatePath, str
 int Runner::RunFilterSelection() const
 {
 	cout << endl;
-	cout << "사용가능한 필터" << endl;
+	cout << "Available Filters" << endl;
 	cout << "0. FreeImage" << endl;
 	cout << "1. OpenCL" << endl;
 	cout << "2. Multithread" << endl;
@@ -125,11 +125,11 @@ int Runner::RunFilterSelection() const
 	int filter;
 	do
 	{
-		cout << "필터를 선택하세요 : ";
+		cout << "Select your filter : ";
 		cin >> filter;
 		if (4 <= filter)
 		{
-			cout << "올바른 필터번호가 아닙니다." << endl;
+			cout << "Wrong filter number." << endl;
 		}
 		else
 		{
@@ -148,7 +148,7 @@ int Runner::RunOpenCLDeviceSelection(BilinearFilter_OpenCL& bilinearFiler) const
 	typedef vector<string>::size_type DeviceIndexType;
 
 	cout << endl;
-	cout << "현재 시스템에서 사용가능한 OpenCL 장치" << endl;
+	cout << "Available OpenCL devices in your system" << endl;
 
 	vector<string> availableDevices;
 	bilinearFiler.GetAvailableDevices(&availableDevices);
@@ -162,11 +162,11 @@ int Runner::RunOpenCLDeviceSelection(BilinearFilter_OpenCL& bilinearFiler) const
 	unsigned int device;
 	do
 	{
-		cout << "장치를 선택해 주세요 :";
+		cout << "Select your device :";
 		cin >> device;
 		if (deviceCount <= device)
 		{
-			cout << "잘못된 장치번호입니다." << endl;
+			cout << "Wrong device number." << endl;
 		}
 		else
 		{
@@ -183,15 +183,15 @@ int Runner::RunOpenCLDeviceSelection(BilinearFilter_OpenCL& bilinearFiler) const
 int Runner::RunMultithreadSelection() const
 {
 	cout << endl;
-	cout << "현재 시스템의 논리 코어 개수: " << thread::hardware_concurrency() << endl;
+	cout << "Number of logical cores in your system: " << thread::hardware_concurrency() << endl;
 
 	int numThreads;
 	do
 	{
-		cout << "사용할 스레드 개수를 입력하세요 : ";
+		cout << "Enter the number of threads : ";
 		cin >> numThreads;
 		if (numThreads < 1) {
-			cout << "잘못된 스레드 개수입니다." << endl;
+			cout << "Wrong thread number." << endl;
 		}
 		else
 		{
@@ -211,11 +211,11 @@ int Runner::RunHeterogeneousCpuSelection() const
 	int cpuWeight;
 	do
 	{
-		cout << "CPU Weight를 입력하세요 : ";
+		cout << "Enter CPU Weight : ";
 		cin >> cpuWeight;
 		if (cpuWeight < 1)
 		{
-			cout << "잘못된 CPU Weight 값입니다." << endl;
+			cout << "Wrong CPU Weight." << endl;
 		}
 		else
 		{
@@ -233,11 +233,11 @@ int Runner::RunHeterogeneousGpuSelection() const
 	int gpuWeight;
 	do
 	{
-		cout << "GPU Weight를 입력하세요 : ";
+		cout << "Enter GPU Weight : ";
 		cin >> gpuWeight;
 		if (gpuWeight < 1)
 			{
-			cout << "잘못된 GPU Weight 값입니다." << endl;
+			cout << "Wrong GPU Weight." << endl;
 		}
 		else
 		{

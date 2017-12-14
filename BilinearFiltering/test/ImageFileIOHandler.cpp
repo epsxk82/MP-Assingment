@@ -57,7 +57,7 @@ void ImageFileIOHandler::SaveTile(FIBITMAP* bitmap, unsigned int level, unsigned
 	string filePath = rowPath + "\\" + to_string(column) + ".bmp";
 	FreeImage_Save(FIF_BMP, bitmap, filePath.c_str());
 
-	cout << filePath << " 파일이 생성되었습니다." << endl;
+	cout << filePath << " file is created." << endl;
 }
 
 void ImageFileIOHandler::UnloadTile(FIBITMAP* bitmap) const

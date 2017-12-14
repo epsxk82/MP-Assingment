@@ -33,7 +33,7 @@ bool OpenCLEnvironment::Initialize()
 bool OpenCLEnvironment::InitializeDevice()
 {
 	cout << endl;
-	cout << "OpenCL 장치를 초기화 중입니다." << endl;
+	cout << "Initializing OpenCL Devices." << endl;
 
 	cl_int error;
 	cl_platform_id platforms[10];
@@ -41,7 +41,7 @@ bool OpenCLEnvironment::InitializeDevice()
 	error = clGetPlatformIDs(10, platforms, &actualNumberOfPlatforms);
 	if (error)
 	{
-		cout << "OpenCL 에러 : OpenCL 플랫폼을 가져오는 중에 에러가 발생하였습니다." << endl;
+		cout << "OpenCL Error : Failed to retrieve OpenCL platforms." << endl;
 		return false;
 	}
 
@@ -57,10 +57,10 @@ bool OpenCLEnvironment::InitializeDevice()
 		cl_context context = clCreateContextFromType(contextProperties, CL_DEVICE_TYPE_ALL, NULL, NULL, &error);
 		if (error)
 		{
-			cout << "OpenCL 에러 : OpenCL 컨텍스트를 생성하는 중에 에러가 발생하였습니다." << endl;
+			cout << "OpenCL Error : Failed to create OpenCL context." << endl;
 			string platformInformation;
 			GetPlatformInformation(platform, &platformInformation);
-			cout << "대상 플랫폼 : " << platformInformation << endl;
+			cout << "Target Platform : " << platformInformation << endl;
 
 			continue;
 		}
@@ -71,10 +71,10 @@ bool OpenCLEnvironment::InitializeDevice()
 			cl_command_queue commandQueue = clCreateCommandQueue(context, device, 0, &error);
 			if (error)
 			{
-				cout << "OpenCL 에러 : OpenCL 장치의 커맨드큐를 생성하는 중에 에러가 발생하였습니다." << endl;
+				cout << "OpenCL Error : Failed to create OpenCL device command queue." << endl;
 				string deviceInformation;
 				GetDeviceInformation(device, &deviceInformation);
-				cout << "대상 디바이스 : " << deviceInformation << endl;
+				cout << "Target Device : " << deviceInformation << endl;
 			}
 			else
 			{
@@ -114,7 +114,7 @@ bool OpenCLEnvironment::CreateProgram(Device* device)
 	};
 	typedef vector<ProgramInformation>::size_type ProgramInformationIndexType;
 
-	cout << "OpenCL 프로그램들을 빌드 중입니다." << endl;
+	cout << "Building OpenCL program." << endl;
 
 	vector<ProgramInformation> programInformations;
 	programInformations.push_back(ProgramInformation("SWBilinearDownScaling.cl", "SWBilinearDownScaling"));
@@ -128,12 +128,12 @@ bool OpenCLEnvironment::CreateProgram(Device* device)
 		cl_program program = BuildProgram(programPath, device->_Context);
 		if (!program)
 		{
-			cout << "OpenCL 에러 : 프로그램을 생성하는 도중 에러가 발생하였습니다." << endl;
-			cout << "대상 프로그램 : " << programPath << endl;
+			cout << "OpenCL Error : Failed to build OpenCL program." << endl;
+			cout << "Target Program : " << programPath << endl;
 
 			string deviceInformation;
 			GetDeviceInformation(device->_Device, &deviceInformation);
-			cout << "OpenCL 디바이스: " << deviceInformation << endl;
+			cout << "OpenCL Device: " << deviceInformation << endl;
 
 			return false;
 		}
@@ -143,8 +143,8 @@ bool OpenCLEnvironment::CreateProgram(Device* device)
 			cl_kernel kernel = clCreateKernel(program, programInformation._KernelName.c_str(), &error);
 			if (error)
 			{
-				cout << "OpenCL 에러 : 커널을 생성하는 도중 에러가 발생하였습니다." << endl;
-				cout << "대상 커널 : " << programInformation._KernelName << "(" << programPath << ")" << endl;
+				cout << "OpenCL Error : Failed to create OpenCL kernel." << endl;
+				cout << "Target Kernel : " << programInformation._KernelName << "(" << programPath << ")" << endl;
 
 				return false;
 			}
@@ -178,8 +178,8 @@ cl_program OpenCLEnvironment::BuildProgram(string const& programPath, cl_context
 	cl_program program = clCreateProgramWithSource(context, 1, (const char**)&sourceBuffer, NULL, &error);
 	if (error)
 	{
-		cout << "OpenCL 에러 : 프로그램을 생성하는 중에 에러가 발생하였습니다.";
-		cout << "프로그램 경로 : " << programPath << endl;
+		cout << "OpenCL Error : Failed to build OpenCL program.";
+		cout << "Program Path : " << programPath << endl;
 
 		return NULL;
 	}
@@ -187,8 +187,8 @@ cl_program OpenCLEnvironment::BuildProgram(string const& programPath, cl_context
 	error = clBuildProgram(program, 0, NULL, NULL, NULL, NULL);
 	if (error)
 	{
-		cout << "OpenCL 에러 : 프로그램을 빌드하는 중에 에러가 발생하였습니다.";
-		cout << "프로그램 경로 : " << programPath << endl;
+		cout << "OpenCL Error : Failed to build OpenCL program.";
+		cout << "Program Path : " << programPath << endl;
 
 		// Determine the size of the log
 		size_t log_size;
