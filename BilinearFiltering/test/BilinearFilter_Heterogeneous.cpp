@@ -34,7 +34,7 @@ void BilinearFilter_Heterogeneous::Upsample(std::vector<FIBITMAP*> const& source
 	std::vector<QuadBitMap> gpuDestinations;
 
 	std::thread *cpuThread = new std::thread(threadWorkerUpsample, cpuWorker, cpuSources, width, height, pitch, bytePerPixel, &cpuDestinations);
-	std::thread *gpuThread = new std::thread(threadWorkerUpsample, gpuWorker, cpuSources, width, height, pitch, bytePerPixel, &gpuDestinations);
+	std::thread *gpuThread = new std::thread(threadWorkerUpsample, gpuWorker, gpuSources, width, height, pitch, bytePerPixel, &gpuDestinations);
 
 	destinations->resize(sourceCount);
 	QuadBitMap *destinationsData = destinations->data();
@@ -56,14 +56,18 @@ void BilinearFilter_Heterogeneous::Downsample(std::vector<QuadBitMap> const& sou
 	size_t sourceCount = sources.size();
 	size_t cpuSourceCount = sourceCount * cpuWeight / (cpuWeight + gpuWeight);
 	size_t gpuSourceCount = sourceCount - cpuSourceCount;
-
-	std::vector<QuadBitMap> cpuSources(sources.begin(), sources.begin() + cpuSourceCount);
-	std::vector<QuadBitMap> gpuSources(sources.begin() + cpuSourceCount, sources.end());
+	
+	auto cpuStartIter = sources.begin();
+	auto cpuEndIter = sources.begin() + cpuSourceCount;
+	auto gpuStartIter = sources.begin() + cpuSourceCount;
+	auto gpuEndIter = sources.end();
+	std::vector<QuadBitMap> cpuSources(cpuStartIter, cpuEndIter);
+	std::vector<QuadBitMap> gpuSources(gpuStartIter, gpuEndIter);
 	std::vector<FIBITMAP*> cpuDestinations(cpuSourceCount);
 	std::vector<FIBITMAP*> gpuDestinations(gpuSourceCount);
 
 	std::thread *cpuThread = new std::thread(threadWorkerDownsample, cpuWorker, cpuSources, width, height, pitch, bytePerPixel, &cpuDestinations);
-	std::thread *gpuThread = new std::thread(threadWorkerDownsample, gpuWorker, cpuSources, width, height, pitch, bytePerPixel, &gpuDestinations);
+	std::thread *gpuThread = new std::thread(threadWorkerDownsample, gpuWorker, gpuSources, width, height, pitch, bytePerPixel, &gpuDestinations);
 
 	destinations->resize(sourceCount);
 	FIBITMAP* *destinationsData = destinations->data();
