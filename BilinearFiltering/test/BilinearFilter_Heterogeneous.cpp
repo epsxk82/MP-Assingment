@@ -63,8 +63,8 @@ void BilinearFilter_Heterogeneous::Downsample(std::vector<QuadBitMap> const& sou
 	auto gpuEndIter = sources.end();
 	std::vector<QuadBitMap> cpuSources(cpuStartIter, cpuEndIter);
 	std::vector<QuadBitMap> gpuSources(gpuStartIter, gpuEndIter);
-	std::vector<FIBITMAP*> cpuDestinations(cpuSourceCount);
-	std::vector<FIBITMAP*> gpuDestinations(gpuSourceCount);
+	std::vector<FIBITMAP*> cpuDestinations;
+	std::vector<FIBITMAP*> gpuDestinations;
 
 	std::thread *cpuThread = new std::thread(threadWorkerDownsample, cpuWorker, cpuSources, width, height, pitch, bytePerPixel, &cpuDestinations);
 	std::thread *gpuThread = new std::thread(threadWorkerDownsample, gpuWorker, gpuSources, width, height, pitch, bytePerPixel, &gpuDestinations);
